@@ -6,7 +6,7 @@
                     <icon type='icon-Vue' />
                 </a-row>
             </a-layout-header>
-            <a-menu theme='dark' mode='inline' :selectedKeys='selectedKeys'>
+            <a-menu theme='dark' mode='inline' :selectedKeys='selectedKeys' @select="handleSelect">
                 <a-menu-item
                     v-for="({ path, name, label, icon }) in menus"
                     :key='name'
@@ -41,10 +41,13 @@ export default defineComponent({
             collapsed: false,
             selectedKeys: ['home']
         })
+
+        const handleSelect = ({ item, key, selectedKeys }:{ item: any, key: string, selectedKeys: string[] }) => data.selectedKeys = selectedKeys
         
         return {
             ...toRefs(data),
-            menus
+            menus,
+            handleSelect
         }
     }
 })
