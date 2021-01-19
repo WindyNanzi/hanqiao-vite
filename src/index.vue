@@ -33,13 +33,14 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs, RendererElement } from "vue"
+import { useRoute } from "vue-router"
 import menus from './route/menu'
 
 export default defineComponent({
     setup () {
         const data = reactive({
             collapsed: false,
-            selectedKeys: ['home']
+            selectedKeys: [useRoute().name]
         })
 
         const handleSelect = ({ item, key, selectedKeys }:{ item: any, key: string, selectedKeys: string[] }) => data.selectedKeys = selectedKeys
