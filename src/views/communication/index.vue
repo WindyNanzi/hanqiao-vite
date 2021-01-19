@@ -1,5 +1,5 @@
 <template>
-    <a-card title="Vue-2">
+    <a-card title="Vue-3">
         <A/>
     </a-card>
 </template>
