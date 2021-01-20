@@ -1,13 +1,13 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import menus from './menu'
+import { createRouter, createWebHashHistory } from "vue-router";
+import menus from "./menu";
 
-const index = () => import('../index.vue')
-const home = () => import('../views/Home.vue')
+const index = () => import("../index.vue");
+const home = () => import("../views/Home.vue");
 
 const routers = [
   {
-    path: '/',
-    redirect: '/home',
+    path: "/",
+    redirect: "/home",
     component: index,
     children: menus.map(({ path, name, component }) => ({
       path,
@@ -15,9 +15,9 @@ const routers = [
       component,
     })),
   },
-]
+];
 
 export default createRouter({
   history: createWebHashHistory(),
   routes: routers,
-})
+});

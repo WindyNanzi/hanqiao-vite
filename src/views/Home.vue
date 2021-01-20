@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import HelloWorld from '../components/HelloWorld.vue'
+import { defineComponent } from "vue";
+import HelloWorld from "../components/HelloWorld.vue";
 export default defineComponent({
-  name: 'home',
-  components: {HelloWorld}
-})
+  name: "home",
+  components: { HelloWorld },
+});
 </script>
