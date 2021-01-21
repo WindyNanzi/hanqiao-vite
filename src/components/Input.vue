@@ -8,7 +8,7 @@
 </template>
 <script lang="ts">
 import mitt, { Emitter } from "mitt";
-import { defineComponent, inject, InputHTMLAttributes, ref } from "vue";
+import { defineComponent, inject, ref } from "vue";
 
 export default defineComponent({
   name: 'iInput',
@@ -19,16 +19,20 @@ export default defineComponent({
     }
   },
 
-  setup(props){
+  setup(props, { emit }){
     const bus = inject('bus') as Emitter || mitt()
     const currentValue = ref(props.value)
 
-    const handleInput = (e) => {
+    const handleInput = (e: { target: HTMLInputElement }) => {
       const val = e.target.value
+      currentValue.value = val
+      emit('input', val)
+      bus.emit('on-form-change', val)
     }
 
+    const handleBlur = () => bus.emit('on-form-blur', currentValue.value)
 
-    return { currentValue }
+    return { currentValue, handleInput, handleBlur }
   }
 
 })

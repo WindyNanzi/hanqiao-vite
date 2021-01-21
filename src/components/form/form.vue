@@ -5,7 +5,8 @@
 </template>
 <script lang="ts">
 import mitt from "mitt";
-import { defineComponent, onMounted, provide, reactive } from "vue";
+import { defineComponent } from "vue";
+import { generateForm } from './form'
 
 export default defineComponent({
   name: 'iForm',
@@ -15,18 +16,16 @@ export default defineComponent({
       default: () => {}
     },
     rules: {
-      type: Array,
-      default: () => []
+      type: Object,
+      default: () => {}
     }
   },
-  setup(prop) {
-    const bus = mitt()
-    provide('bus', bus)
-
-    const items: any[] = []
-    bus.on('on-form-item-add', (item) => items.push(item))
-    bus.on('on-form-item-remove', (item)=> items.splice(items.indexOf(item), 1))
-    onMounted(() => console.log(items))
+  setup(props) {
+    const { resetFields, validate } = generateForm(props)
+    return {
+      resetFields,
+      validate
+    }
   }
 })
 </script>

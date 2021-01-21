@@ -1,15 +1,16 @@
 <template>
   <div>
-    <label v-if="label">{{ label }}</label>
+    <label v-if="label" :class="[{'i-form-item-label-required':  isRequired }]">{{ label }}</label>
     <div>
       <slot />
+      <div v-if="validateState === 'error'" class="i-form-item-message">{{ validateMessage }}</div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { Emitter } from "mitt";
-import { defineComponent, inject, onMounted, onUnmounted } from "vue";
 
+import { defineComponent } from 'vue'
+import { generateFormItem, IFormItemProps } from './form'
 export default defineComponent({
   name: 'iFormItem',
   props: {
@@ -18,18 +19,27 @@ export default defineComponent({
       default: ''
     },
     prop: {
-      type: String || undefined,
-      default: undefined
+      type: String,
+      default: ''
     }
   },
   setup(props) {
-    const bus = inject('bus') as Emitter
-    const symbol = Symbol()
-
-    if(props.prop) {
-      bus.emit('on-form-item-add', symbol)
-      onUnmounted(() => bus.emit('on-form-item-add', symbol))
+    const { isRequired, validateState, validateMessage } = generateFormItem(props)
+    return {
+      isRequired,
+      validateState,
+      validateMessage
     }
+    
   }
 })
 </script>
+<style scoped>
+.i-form-item-label-required::before{
+  content: '*';
+  color: red;
+}
+.i-form-item-message {
+  color: red;
+}
+</style>
