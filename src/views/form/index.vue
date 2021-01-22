@@ -1,34 +1,50 @@
 <template>
   <div>
-    <i-form :model="form" ref="form">
-      <i-form-item label="woooo" prop="name"></i-form-item>
+    <i-form :model="form" ref="form" :rules="rules">
+      <i-form-item label="用户名" prop="name">
+        <i-input v-model="name" />
+      </i-form-item>
+      <i-form-item label="邮箱" prop="email">
+        <i-input v-model="email" />
+      </i-form-item>
     </i-form>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
+import { computed, defineComponent, getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue'
 import { IFormFunc } from '../../components/form/form'
 import iForm from '../../components/form/form.vue'
 import iFormItem from '../../components/form/form-item.vue'
+import iInput from '../../components/Input.vue'
 
 export default defineComponent({
-  components: { iForm, iFormItem },
+  components: { iForm, iFormItem, iInput },
   setup () {
-    const data = reactive({
-      form: {
-        name: '',
-        email: ''
-      }
-    })
+    const ctx = getCurrentInstance()
+    const name = ref('??')
+    const email = ref('!!!1')
+
+    const form = computed(() => ({ name, email }))
+
+    const rules = {
+      name: [
+        { required: true, message: '用户名不能为空', trigger: 'blur' }
+      ],
+      email: [
+        { required: true, message: '邮箱不能为空', trigger: 'blur' },
+        { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
+      ],
+    }
 
     onMounted(() => {
-      const form = ref()
-      debugger
-      form.value?.validate()
+      const form = ctx?.refs['form'] as IFormFunc
     })
 
     return {
-      ...toRefs(data)
+      form,
+      rules,
+      name,
+      email
     }
   }
 })

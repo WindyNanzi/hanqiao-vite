@@ -1,9 +1,9 @@
 import AsyncValidator, { RuleItem } from 'async-validator'
 import mitt, { Emitter } from 'mitt'
-import { computed, inject, onMounted, onUnmounted, provide, reactive, toRefs } from 'vue'
+import { computed, inject, onUnmounted, provide, reactive, toRefs } from 'vue'
 
 export interface IFormModelProps {
-  [key: string]: string | boolean | number
+  [key: string]: { value: string | boolean | number }
 }
 
 export type IFormRuleItem = RuleItem & { trigger?: string }
@@ -41,15 +41,12 @@ export function generateForm(props: IFormProps) {
   const fields: IFormItemFunc[] = []
   bus.on('on-form-item-add', (field) => fields.push(field))
   bus.on('on-form-item-remove', (field) => fields.splice(fields.indexOf(field), 1))
-  onMounted(() => console.log(fields))
 
   const resetFields = () => fields.forEach((field) => field.resetField())
   const validate = (callback: Function = () => {}) =>
     new Promise((resolve) => {
       let valid = true
       let count = 0
-      debugger
-      console.log('成功了')
       fields.forEach((field) => {
         field.validate('', (errors: any) => {
           if (errors) {
@@ -81,7 +78,7 @@ export function generateFormItem(props: IFormItemProps) {
     validateMessage: '', // 校验不通过的提示信息
   })
 
-  const fieldValue = computed(() => prop && model?.[prop])
+  const fieldValue = computed(() => prop && model?.[prop].value)
 
   /** 获取当前 form-item 的校验规则 */
   const getRules = () => ([] as IFormRuleItem[]).concat(rules && prop ? rules[prop] : [])
@@ -113,7 +110,7 @@ export function generateFormItem(props: IFormItemProps) {
     data.validateState = ''
     data.validateMessage = ''
     if (model && prop) {
-      model[prop] = fieldValue.value || ''
+      model[prop].value = fieldValue.value || ''
     }
   }
 
