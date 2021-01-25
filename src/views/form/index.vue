@@ -1,6 +1,6 @@
 <template>
   <div>
-    <i-form :model="form" ref="form" :rules="rules">
+    <i-form :model="form" ref="formRef" :rules="rules">
       <i-form-item label="用户名" prop="name">
         <i-input v-model="form.name" />
       </i-form-item>
@@ -23,6 +23,7 @@ export default defineComponent({
     const ctx = getCurrentInstance()
     const name = ref('')
     const email = ref('')
+    const formRef = ref(null) as any
 
     const form = computed(() => ({ name, email }))
 
@@ -37,14 +38,18 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      const form = ctx?.refs['form'] as IFormFunc
+      const form = ctx?.refs['formRef'] as IFormFunc //这是获取 子组件对象的一种方式
+      console.log(formRef) //这是获取 子组件对象的另一种方式
+      console.log(form)
+      form.validate()
     })
 
     return {
       form,
       rules,
       name,
-      email
+      email,
+      formRef
     }
   }
 })
