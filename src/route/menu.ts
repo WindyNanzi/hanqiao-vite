@@ -1,6 +1,7 @@
 const home = () => import('../views/Home.vue')
 const communication = () => import('../views/communication/index.vue')
 const form = () => import('../views/form/index.vue')
+const reactive = () => import('../views/reactive/index.vue')
 
 export default [
   {
@@ -14,7 +15,7 @@ export default [
     path: '/communication',
     name: 'communication',
     component: communication,
-    label: '事件通讯',
+    label: '通讯',
     icon: 'icon-wifi',
   },
   {
@@ -23,5 +24,12 @@ export default [
     component: form,
     label: '表单',
     icon: 'icon-form',
+  },
+  {
+    path: '/reactive',
+    name: 'reactive',
+    component: reactive,
+    label: '响应',
+    icon: 'icon-react',
   },
 ]
