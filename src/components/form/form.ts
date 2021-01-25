@@ -1,9 +1,9 @@
 import AsyncValidator, { RuleItem } from 'async-validator'
 import mitt, { Emitter } from 'mitt'
-import { computed, inject, onUnmounted, provide, reactive, toRefs } from 'vue'
+import { inject, onUnmounted, provide, reactive, toRefs } from 'vue'
 
 export interface IFormModelProps {
-  [key: string]: { value: string | boolean | number }
+  [key: string]: string
 }
 
 export type IFormRuleItem = RuleItem & { trigger?: string }
@@ -78,8 +78,6 @@ export function generateFormItem(props: IFormItemProps) {
     validateMessage: '', // 校验不通过的提示信息
   })
 
-  const fieldValue = computed(() => prop && model?.[prop].value)
-
   /** 获取当前 form-item 的校验规则 */
   const getRules = () => ([] as IFormRuleItem[]).concat(rules && prop ? rules[prop] : [])
 
@@ -95,7 +93,7 @@ export function generateFormItem(props: IFormItemProps) {
 
     data.validateState = 'validating'
     const validator = new AsyncValidator({ [prop]: rules })
-    validator.validate({ [prop]: fieldValue.value }, { firstFields: true }, (errors) => {
+    validator.validate({ [prop]: model?.[prop] }, { firstFields: true }, (errors) => {
       data.validateState = !errors ? 'succsee' : 'error'
       data.validateMessage = errors ? errors[0].message : ''
 
@@ -110,7 +108,7 @@ export function generateFormItem(props: IFormItemProps) {
     data.validateState = ''
     data.validateMessage = ''
     if (model && prop) {
-      model[prop].value = fieldValue.value || ''
+      model[prop] = ''
     }
   }
 
@@ -119,8 +117,11 @@ export function generateFormItem(props: IFormItemProps) {
     bus.emit('on-form-item-add', formItem)
     onUnmounted(() => bus.emit('on-form-item-remove', formItem))
 
-    bus.on('on-form-blur', () => onFieldBlur())
-    bus.on('on-form-change', () => onFieldChange())
+    const formItemBus = mitt()
+
+    formItemBus.on('on-form-blur', () => onFieldBlur())
+    formItemBus.on('on-form-change', () => onFieldChange())
+    provide('form-item-bus', formItemBus)
 
     getRules().every((rule) => (data.isRequired = !!rule.required))
   }

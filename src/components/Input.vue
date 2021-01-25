@@ -7,8 +7,8 @@
   />
 </template>
 <script lang="ts">
-import mitt, { Emitter } from "mitt";
-import { defineComponent, inject, onMounted, ref } from "vue";
+import { Emitter } from "mitt";
+import { defineComponent, inject,  ref } from "vue";
 
 export default defineComponent({
   name: 'iInput',
@@ -20,7 +20,7 @@ export default defineComponent({
   },
 
   setup(props, { emit }){
-    const bus = inject('form-bus') as Emitter || mitt()
+    const bus = inject('form-item-bus') as Emitter || { emit: () => {} }
     const currentValue = ref(props.modelValue)
 
     const handleInput = (e: { target: HTMLInputElement }) => {

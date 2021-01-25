@@ -10,7 +10,7 @@
 <script lang="ts">
 
 import { defineComponent } from 'vue'
-import { generateFormItem, IFormItemProps } from './form'
+import { generateFormItem } from './form'
 export default defineComponent({
   name: 'iFormItem',
   props: {

@@ -4,7 +4,6 @@
   </form>
 </template>
 <script lang="ts">
-import mitt from "mitt";
 import { defineComponent } from "vue";
 import { generateForm } from './form'
 
