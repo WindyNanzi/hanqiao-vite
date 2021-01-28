@@ -6,10 +6,15 @@
     <a-card title="readonly" class="card" size="small">
       <a-input v-model:value="test2.value"/>
     </a-card>
+    <a-card title="shallowReactive" class="card" size="small">
+      <a-row>{{ test3Stringfy }}</a-row>
+      <a-input class="test1" v-model:value="test3.input1"  style="margin-right: 10px;"/>
+      <a-input class="test1" v-model:value="test3.input2.value" />
+    </a-card>
   </a-row>  
 </template>
 <script lang="ts">
-import { defineComponent, markRaw, reactive, readonly } from "vue";
+import { computed, defineComponent, reactive, readonly, shallowReactive } from "vue";
 
 export default defineComponent({
   setup() {
@@ -17,12 +22,14 @@ export default defineComponent({
 
     const test2 = readonly(reactive({value: 'test2'}))
 
-    const obj = { ooo: 'oooo' }
-    console.log(markRaw(obj))
+    const test3 = shallowReactive({ input1: 'test3', input2: { value: 'test3.1' }})
+    const test3Stringfy = computed(() => JSON.stringify(test3).replace(/"/g, ''))
 
     return {
       test1,
-      test2
+      test2,
+      test3,
+      test3Stringfy
     }
   }
 })
