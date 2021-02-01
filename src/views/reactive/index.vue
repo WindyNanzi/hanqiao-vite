@@ -15,6 +15,10 @@
       <a-input class="input" v-model:value="test4.label.txt"/><span>{{ test4.label.txt }}</span><br/>
       <a-input class="input" v-model:value="test4_1"/><span>{{ test4_1 }}</span>
     </a-card>
+    <a-card title="toRefs" class="card" size="small">
+      <a-input class="input" v-model:value="test5.a"/><span>{{ test5.a }}</span><br/>
+      <a-input class="input" v-model:value="test5.b"/><span>{{ test5.b }}</span>
+    </a-card>
   </a-row>  
 </template>
 <script lang="ts">
@@ -32,13 +36,16 @@ export default defineComponent({
     const test4 = ref({ label: { txt: 'text4' } })
     const test4_1 = ref('test4_1')
 
+    const test5 = toRefs(reactive({test5: {a: 'test5_A', b: 'test5_b'}}))
+
     return {
       test1,
       test2,
       test3,
       test3Stringfy,
       test4,
-      test4_1
+      test4_1,
+      ...test5
     }
   }
 })

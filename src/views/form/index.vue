@@ -11,7 +11,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, ref, computed } from 'vue'
+import { defineComponent, getCurrentInstance, onMounted, ref, computed, reactive, toRefs } from 'vue'
 import { IFormFunc } from '../../components/form/form'
 import iForm from '../../components/form/form.vue'
 import iFormItem from '../../components/form/form-item.vue'
@@ -21,11 +21,14 @@ export default defineComponent({
   components: { iForm, iFormItem, iInput },
   setup () {
     const ctx = getCurrentInstance()
-    const name = ref('')
-    const email = ref('')
     const formRef = ref(null) as any
 
-    const form = computed(() => ({ name, email }))
+    const data = reactive({
+      form:{
+        name: 'w',
+        email: 'a'
+      }
+    })
 
     const rules = {
       name: [
@@ -45,10 +48,8 @@ export default defineComponent({
     })
 
     return {
-      form,
+      ...toRefs(data),
       rules,
-      name,
-      email,
       formRef
     }
   }
