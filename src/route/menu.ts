@@ -1,7 +1,7 @@
-const home = () => import('../views/Home.vue')
-const communication = () => import('../views/communication/index.vue')
-const form = () => import('../views/form/index.vue')
-const reactive = () => import('../views/reactive/index.vue')
+const home = () => import('@/views/Home.vue')
+const communication = () => import('@/views/communication/index.vue')
+const form = () => import('@/views/form/index.vue')
+const reactive = () => import('@/views/reactive/index.vue')
 
 export default [
   {

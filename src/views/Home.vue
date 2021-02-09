@@ -4,7 +4,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import HelloWorld from "../components/HelloWorld.vue";
+import HelloWorld from "comps/HelloWorld.vue";
 export default defineComponent({
   name: "home",
   components: { HelloWorld },
